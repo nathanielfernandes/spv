@@ -84,7 +84,7 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 	}
 
 	pre, err := preview.GetPreview(trackID)
-	if (err != nil || pre == preview.PreviewResponse{}) {
+	if err != nil {
 		return nil, err
 	}
 
