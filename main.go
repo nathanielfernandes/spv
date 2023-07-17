@@ -55,7 +55,7 @@ func track(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	buf, err := getOrGen(trackID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to generate track", http.StatusInternalServerError)
 		return
 	}
 
@@ -84,7 +84,7 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 	}
 
 	pre, err := preview.GetPreview(trackID)
-	if err != nil {
+	if (err != nil || pre == preview.PreviewResponse{}) {
 		return nil, err
 	}
 
