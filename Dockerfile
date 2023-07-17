@@ -11,7 +11,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build ./cmd/main/main.go
+RUN go build main.go
 
 EXPOSE 80
 CMD ["./main"]
