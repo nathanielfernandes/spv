@@ -3,7 +3,6 @@ let w, h = @Dimensions()
 let d = (w / 8)
 let size = w - d * 2
 
-let color = @GetCoverColor(art)
 @Clear(color)
 
 with @PushRelative(d, d, size, size) {

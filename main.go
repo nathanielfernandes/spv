@@ -12,7 +12,6 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/nathanielfernandes/cnvs/preview"
-	"github.com/nathanielfernandes/cnvs/token"
 
 	_ "embed"
 )
@@ -30,8 +29,8 @@ var LOCK = sync.RWMutex{}
 func main() {
 	go cleanCacheLoop()
 
-	token.StartAccessTokenReferesher()
-	preview.StartPreviewRunner()
+	// token.StartAccessTokenReferesher()
+	preview.StartScrapeRunner()
 
 	router := httprouter.New()
 	router.GET("/:trackID", track)
@@ -88,7 +87,16 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	buf, err = generateImage(pre.CoverArtURL, pre.TrackName, pre.ArtistName)
+	// weird bug where indexing is out of bounds
+	artistName := "unkown"
+	for _, artist := range pre.Artists {
+		if artist.Name != "" {
+			artistName = artist.Name
+			break
+		}
+	}
+
+	buf, err = generateImage(pre.CoverArt.Small, pre.TrackName, artistName, pre.BackgroundColor)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +108,7 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 	return buf, nil
 }
 
-func generateImage(album_art, track_name, artist_name string) (*bytes.Buffer, error) {
+func generateImage(album_art, track_name, artist_name, bg_color string) (*bytes.Buffer, error) {
 	payload := RunPayload{
 		Size: []int{512, 640},
 		Files: []File{
@@ -121,6 +129,10 @@ func generateImage(album_art, track_name, artist_name string) (*bytes.Buffer, er
 			LiteralAsset{
 				Name:    "artist_name",
 				Literal: fmt.Sprintf("\"%s\"", artist_name),
+			},
+			LiteralAsset{
+				Name:    "color",
+				Literal: bg_color,
 			},
 		},
 	}

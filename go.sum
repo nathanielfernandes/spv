@@ -1,9 +1,13 @@
 github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
-github.com/nathanielfernandes/cnvs v0.0.0-20230706033312-b2e209313cd3 h1:sO2B7HWRjvlFmfGDA5CfLkkFOKytrai3AZtGTaGhuvQ=
-github.com/nathanielfernandes/cnvs v0.0.0-20230706033312-b2e209313cd3/go.mod h1:cPmbL2xQh/rKbPjaxkt1mF0vhC3sqpZEon9CtfhV1tg=
+github.com/nathanielfernandes/cnvs v0.0.0-20230906154534-80596a5e54f1 h1:ZzPvJn0y//IZ5AYfXhuSdHZpbhBXiXER4dTVj3udgMY=
+github.com/nathanielfernandes/cnvs v0.0.0-20230906154534-80596a5e54f1/go.mod h1:cPmbL2xQh/rKbPjaxkt1mF0vhC3sqpZEon9CtfhV1tg=
+github.com/nathanielfernandes/cnvs v0.0.0-20230906155715-56e663b3549a h1:4kma9opIHNLZHIykbM+ZNtfRLsCKijOD5WCsAYYh7wM=
+github.com/nathanielfernandes/cnvs v0.0.0-20230906155715-56e663b3549a/go.mod h1:cPmbL2xQh/rKbPjaxkt1mF0vhC3sqpZEon9CtfhV1tg=
 github.com/tidwall/gjson v1.14.4 h1:uo0p8EbA09J7RQaflQ1aBRffTR7xedD2bcIVSYxLnkM=
 github.com/tidwall/gjson v1.14.4/go.mod h1:/wbyibRr2FHMks5tjHJ5F8dMZh3AcwJEMf5vlfC0lxk=
+github.com/tidwall/gjson v1.16.0 h1:SyXa+dsSPpUlcwEDuKuEBJEz5vzTvOea+9rjyYodQFg=
+github.com/tidwall/gjson v1.16.0/go.mod h1:/wbyibRr2FHMks5tjHJ5F8dMZh3AcwJEMf5vlfC0lxk=
 github.com/tidwall/match v1.1.1 h1:+Ho715JplO36QYgwN9PGYNhgZvoUSc9X2c80KVTi+GA=
 github.com/tidwall/match v1.1.1/go.mod h1:eRSPERbgtNPcGhD8UCthc6PmLEQXEWd3PRB5JTxsfmM=
 github.com/tidwall/pretty v1.2.0/go.mod h1:ITEVvHYasfjBbM0u2Pg8T2nJnzm8xPwvNhhsoaGGjNU=
