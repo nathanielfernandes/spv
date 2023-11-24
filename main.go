@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -122,12 +123,24 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 
 	// weird bug where indexing is out of bounds
 	artistName := "unkown"
+	// join multiple artists with commas
+	artistNames := []string{}
 	for _, artist := range pre.Artists {
 		if artist.Name != "" {
-			artistName = artist.Name
-			break
+			artistNames = append(artistNames, artist.Name)
 		}
 	}
+
+	if len(artistNames) > 0 {
+		artistName = strings.Join(artistNames, ", ")
+	}
+
+	// for _, artist := range pre.Artists {
+	// 	if artist.Name != "" {
+	// 		artistName = artist.Name
+	// 		break
+	// 	}
+	// }
 
 	buf, err = generateImage(pre.CoverArt.Small, pre.TrackName, artistName, pre.BackgroundColor)
 	if err != nil {
