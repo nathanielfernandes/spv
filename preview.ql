@@ -9,7 +9,7 @@ with @PushRelative(d, d, size, size) {
     let iw, ih = @Dimensions()
     
 
-    @DrawRoundedRectangle(0, 0, iw, ih + 128, 10.0)
+    @DrawRoundedRectangle(0, 0, iw, ih + 158, 10.0)
     @SetColor(@rgba(0, 0, 0, 0.5))
     @Fill()
 
@@ -40,5 +40,16 @@ with @PushRelative(d, d, size, size) {
     @SetFontSize(29)
     @DrawString(artist_name, x, y + 80)
     @SetColor(#ffffffab)
+    @Fill()
+
+    @SetFont("discord-bold")
+    @SetFontSize(21)
+    @DrawString("Spotify", x + 23, y + 125)
+    @Fill()
+
+    @DrawSVGPath(spotify_logo)
+    @Translate(x, y + 125)
+    @Scale(0.04, 0.04)
+
     @Fill()
 }
