@@ -35,6 +35,7 @@ func main() {
 	router := httprouter.New()
 	router.GET("/:trackID", track)
 	router.GET("/:trackID/info", track_info)
+	router.GET("/:trackID/audio", redirect_to_audio)
 
 	fmt.Println("Listening on port 80")
 	if err := http.ListenAndServe("0.0.0.0:80", router); err != nil {
@@ -83,6 +84,18 @@ func track_info(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonBytes)
+}
+
+func redirect_to_audio(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	trackID := ps.ByName("trackID")
+
+	pre, err := preview.GetPreview(trackID)
+	if err != nil {
+		http.Error(w, "Failed to get preview", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, pre.AudioURL, http.StatusFound)
 }
 
 func mustGetEnvString(key string) string {
