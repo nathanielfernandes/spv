@@ -42,14 +42,15 @@ with @PushRelative(d, d, size, size) {
     @SetColor(#ffffffab)
     @Fill()
 
-    @SetFont("discord-bold")
-    @SetFontSize(21)
-    @DrawString("Spotify", x + 23, y + 125)
-    @Fill()
+    // @SetFont("discord-bold")
+    // @SetFontSize(21)
+    // @DrawString("Spotify", x + 23, y + 125)
+    @SetColor(#ffffff70)
+    // @Fill()
 
     @DrawSVGPath(spotify_logo)
-    @Translate(x, y + 125)
-    @Scale(0.04, 0.04)
+    @Translate(x, y + 122)
+    @Scale(0.13, 0.13)
 
     @Fill()
 }
