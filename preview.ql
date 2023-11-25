@@ -10,7 +10,11 @@ let size = w - d * 2
 let bh = size + 158
 let offsety = (h - bh) / 2
 
-@Clear(color)
+if has_bg {
+    @DrawImageCovered(bg_image, 0, 0, w, h)
+} else {
+    @Clear(color)
+}
 
 
 with @PushRelative(d, offsety, size, size) {
