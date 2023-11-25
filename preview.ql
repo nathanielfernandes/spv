@@ -1,11 +1,19 @@
 let w, h = @Dimensions()
 
-let d = (w / 8)
+let d = if color == #00000000{
+    (w / 5)
+}  else {
+    (w / 8)
+}
 let size = w - d * 2
+
+let bh = size + 158
+let offsety = (h - bh) / 2
 
 @Clear(color)
 
-with @PushRelative(d, d, size, size) {
+
+with @PushRelative(d, offsety, size, size) {
     let iw, ih = @Dimensions()
     
 
