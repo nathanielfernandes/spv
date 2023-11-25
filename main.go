@@ -104,7 +104,7 @@ func track_info(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		ReleaseDate:     pre.ReleaseDate,
 	}
 	c, err := canvas.GetCanvas("spotify:track:" + trackID)
-	if err == nil {
+	if err == nil && c != nil {
 		info.CanvasURL = c.CanvasUrl
 	}
 
