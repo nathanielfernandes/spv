@@ -45,8 +45,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// kill the process after 2 hours
-	time.Sleep(2 * time.Hour)
+	// kill the process after 1 hours
+	time.Sleep(1 * time.Hour)
 	panic("Killing process")
 }
 
