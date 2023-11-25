@@ -215,6 +215,10 @@ func generateImage(album_art, track_name, artist_name, bg_color string, bg_image
 				Url:  album_art,
 			},
 			LiteralAsset{
+				Name:    "has_bg",
+				Literal: fmt.Sprintf("%t", bg_image != ""),
+			},
+			LiteralAsset{
 				Name:    "track_name",
 				Literal: fmt.Sprintf("\"%s\"", track_name),
 			},
@@ -237,10 +241,6 @@ func generateImage(album_art, track_name, artist_name, bg_color string, bg_image
 		payload.Assets = append(payload.Assets, ImageAsset{
 			Name: "bg_image",
 			Url:  bg_image,
-		})
-		payload.Assets = append(payload.Assets, LiteralAsset{
-			Name:    "has_bg",
-			Literal: "true",
 		})
 	}
 
