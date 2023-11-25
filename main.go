@@ -61,7 +61,10 @@ func cleanCacheLoop() {
 func track(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	trackID := ps.ByName("trackID")
 
-	buf, err := getOrGen(trackID)
+	// check if overlay
+	overlay := r.URL.Query().Get("overlay") != ""
+
+	buf, err := getOrGen(trackID, overlay)
 	if err != nil {
 		http.Error(w, "Failed to generate track", http.StatusInternalServerError)
 		return
@@ -139,7 +142,14 @@ func mustGetEnvString(key string) string {
 	return val
 }
 
-func getOrGen(trackID string) (*bytes.Buffer, error) {
+func getOrGen(trackID string, overlay bool) (*bytes.Buffer, error) {
+	size := []int{512, 670}
+	trackIDKey := "track:" + trackID
+	if overlay {
+		size = []int{720, 1280}
+		trackIDKey = "overlay:" + trackID
+	}
+
 	LOCK.RLock()
 	buf, ok := CACHE[trackID]
 	LOCK.RUnlock()
@@ -167,21 +177,26 @@ func getOrGen(trackID string) (*bytes.Buffer, error) {
 		artistName = strings.Join(artistNames, ", ")
 	}
 
-	buf, err = generateImage(pre.CoverArt.Small, pre.TrackName, artistName, pre.BackgroundColor)
+	bgcolor := pre.BackgroundColor
+	if overlay {
+		bgcolor = "#00000000"
+	}
+	buf, err = generateImage(pre.CoverArt.Small, pre.TrackName, artistName, bgcolor, size)
+
 	if err != nil {
 		return nil, err
 	}
 
 	LOCK.Lock()
-	CACHE[trackID] = buf
+	CACHE[trackIDKey] = buf
 	LOCK.Unlock()
 
 	return buf, nil
 }
 
-func generateImage(album_art, track_name, artist_name, bg_color string) (*bytes.Buffer, error) {
+func generateImage(album_art, track_name, artist_name, bg_color string, size []int) (*bytes.Buffer, error) {
 	payload := RunPayload{
-		Size: []int{512, 670},
+		Size: size,
 		Files: []File{
 			{
 				Name: "preview.ql",
