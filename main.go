@@ -12,7 +12,10 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
+
+	"github.com/nathanielfernandes/cnvs/canvas"
 	"github.com/nathanielfernandes/cnvs/preview"
+	"github.com/nathanielfernandes/cnvs/token"
 
 	_ "embed"
 )
@@ -30,8 +33,7 @@ var LOCK = sync.RWMutex{}
 func main() {
 	go cleanCacheLoop()
 
-	// token.StartAccessTokenReferesher()
-	preview.StartScrapeRunner()
+	token.StartAccessTokenReferesher()
 
 	router := httprouter.New()
 	router.GET("/:trackID", track)
@@ -42,6 +44,10 @@ func main() {
 	if err := http.ListenAndServe("0.0.0.0:80", router); err != nil {
 		log.Fatal(err)
 	}
+
+	// kill the process after 2 hours
+	time.Sleep(2 * time.Hour)
+	panic("Killing process")
 }
 
 func cleanCacheLoop() {
@@ -68,6 +74,17 @@ func track(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Write(buf.Bytes())
 }
 
+type Info struct {
+	AudioURL        string `json:"audio_url"`
+	CoverArt        preview.CoverArt
+	TrackName       string `json:"track_name"`
+	Artists         preview.Artist
+	AlbumName       string `json:"album_name,omitempty"`
+	BackgroundColor string `json:"background_color"`
+	ReleaseDate     string `json:"release_date,omitempty"`
+	CanvasURL       string `json:"canvas_url,omitempty"`
+}
+
 func track_info(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	trackID := ps.ByName("trackID")
 
@@ -77,7 +94,22 @@ func track_info(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 
-	jsonBytes, err := json.Marshal(pre)
+	info := Info{
+		AudioURL:        pre.AudioURL,
+		CoverArt:        pre.CoverArt,
+		TrackName:       pre.TrackName,
+		Artists:         pre.Artists[0],
+		AlbumName:       pre.AlbumName,
+		BackgroundColor: pre.BackgroundColor,
+		ReleaseDate:     pre.ReleaseDate,
+	}
+	c, err := canvas.GetCanvas("spotify:track:" + trackID)
+	if err == nil {
+		info.CanvasURL = c.CanvasUrl
+	}
+
+	// format json response
+	jsonBytes, err := json.MarshalIndent(info, "", "  ")
 	if err != nil {
 		http.Error(w, "Failed to marshal preview", http.StatusInternalServerError)
 		return
